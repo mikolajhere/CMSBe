@@ -24,12 +24,34 @@ export const updateUserInfo = (req: Request, res: Response) => {
   jwt.verify(token, "jwtkey", (err: Error, userInfo: UserInfoProps) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = "UPDATE users SET `username`=?, `bio`=?, `image`=? WHERE id = ?";
+    const q = "UPDATE `users` SET `username`=?, `bio`=?, `image`=? WHERE id = ?";
     const values = [req.body.username, req.body.bio, req.body.image];
 
     db.query(q, [...values, userInfo.id], (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json("User has been updated.");
+    });
+  });
+};
+
+export const deleteUser = (req: Request, res: Response) => {
+  const token = req.cookies.access_token;
+  if (!token) return res.status(401).json("Not authenticated!");
+
+  jwt.verify(token, "jwtkey", (err: Error, userInfo: UserInfoProps) => {
+    if (err) return res.status(403).json("Token is not valid!");
+
+    console.log({ res });
+    const postId = req.params.id;
+    const q = "DELETE FROM users WHERE `id` = ?";
+
+    db.query(q, [postId, userInfo.id], (err, data) => {
+      console.log({ res });
+      if (err) {
+        res.status(403).json("You can't delete this user!");
+      }
+
+      return res.json("User has been deleted!");
     });
   });
 };
