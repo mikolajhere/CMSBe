@@ -1,4 +1,4 @@
-# CMS - Content Management System application (be)
+# CMS - Content Management System application
 
 Backend of the simple CMS app created with Node, Express, Typescript, MySQL, JSON Web Tokens, bcrypt, multer, moment. 
 <a href="https://mikolajhere.networkmanager.pl/">Live version</a> of the app.
